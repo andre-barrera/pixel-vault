@@ -1,0 +1,200 @@
+{
+  "artworks": [
+    {
+      "id": "a1",
+      "title": "Knight",
+      "artist": "fan100",
+      "style": "8-bit",
+      "year": 2024,
+      "image": "images/knightcharacter-pixelart.webp",
+      "tags": ["character","knight","retro"],
+      "description": "A compact 8-bit knight sprite with cyan highlights."
+    },
+    {
+      "id": "a2",
+      "title": "Monster Pix",
+      "artist": "fan1",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/gamecharacter-pixelart.webp",
+      "tags": ["fan","character"],
+      "description": "Fan pixel sprite inspired by special creatures."
+    },
+    {
+      "id": "a3",
+      "title": "Apocalypse",
+      "artist": "fan1",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/futureknight-pixelart.webp",
+      "tags": ["fan","character"],
+      "description": "Fan pixel sprite inspired by special characters."
+    },
+    {
+      "id": "a4",
+      "title": "City",
+      "artist": "fan145",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/city-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel sprite inspired by special landscapes."
+    },
+    {
+      "id": "a5",
+      "title": "Pets",
+      "artist": "fan1@",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/dogcharacter-pixelart.webp",
+      "tags": ["pets","fan"],
+      "description": "Fan pixel art inspired by animals."
+    },
+    {
+      "id": "a6",
+      "title": "Store",
+      "artist": "fan1",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/store1-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by buildings."
+    },
+    {
+      "id": "a7",
+      "title": "Wolf",
+      "artist": "fan851",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/wolf-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by animals."
+    },
+    {
+      "id": "a8",
+      "title": "Street",
+      "artist": "fan412",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/street-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by lanscapes."
+    },
+    {
+      "id": "a9",
+      "title": "Alien Scene",
+      "artist": "fan89",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/alienencounter-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by aliens."
+    },
+    {
+      "id": "a10",
+      "title": "Game Character",
+      "artist": "fan71",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/charactercity-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by game characters."
+    },
+    {
+      "id": "a11",
+      "title": "Dog",
+      "artist": "fan111",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/dogstory-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by animals."
+    },
+    {
+      "id": "a12",
+      "title": "Highway",
+      "artist": "fan478",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/highway-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by travel."
+    },
+    {
+      "id": "a112",
+      "title": "Neon City",
+      "artist": "fan78",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/neoncity-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by cities."
+    },
+    {
+      "id": "a13",
+      "title": "Space",
+      "artist": "fan4588",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/space-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by space."
+    },
+    {
+      "id": "a14",
+      "title": "Space Travel",
+      "artist": "fan8566",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/spacetravel-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by travel."
+    },
+    {
+      "id": "a15",
+      "title": "Sea",
+      "artist": "fan478",
+      "style": "16-bit",
+      "year": 2023,
+      "image": "images/sea-pixelart.webp",
+      "tags": ["fan","pokemon"],
+      "description": "Fan pixel inspired by sea."
+    }
+  ],
+
+  "heroSlides": [
+    {
+      "title": "Explore Pixel Worlds",
+      "text": "Step into 8-bit adventures full of color and nostalgia.",
+      "image": "images/carousel.webp",
+      "textbutton": "Visit our Gallery",
+      "button": "gallery.html"
+    },
+    {
+      "title": "Meet Retro Heroes",
+      "text": "Discover your favorite pixel legends reimagined.",
+      "image": "images/carousel1.jpg",
+      "textbutton": "Join us",
+      "button": "form.html"
+    },
+    {
+      "title": "Create Your Own",
+      "text": "Design and share your pixel masterpieces.",
+      "image": "images/carousel2.webp",
+      "textbutton": "Check Available Resources",
+      "button": "resources.html"
+    }
+  ],
+
+  "collections": [
+    { "collectionName": "Retro Characters", 
+      "collectionImage": "images/retro-characters.webp", 
+      "description": "View ideas and more"},
+    { "collectionName": "Fan Art", 
+      "collectionImage": "images/fan-art.jpg",
+      "description": "Submit and view unique pixel arts"},
+    { "collectionName": "Environments",  
+      "collectionImage": "images/environments.jpg",
+      "description": "Discover how to create your own" }
+  ]
+}
