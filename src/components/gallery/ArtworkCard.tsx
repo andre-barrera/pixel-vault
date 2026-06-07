@@ -1,13 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import {Artwork} from "@/src/types/artwork";
 import Link from "next/link";
 
 interface ArtworkCardProps {
     artwork: Artwork;
+    isFavorite?: boolean;
+    onToggleFavorite?: (id: string) => void;
 }
 
 export default function ArtworkCard({
-    artwork
+    artwork,
+    isFavorite = false,
+    onToggleFavorite,
 }: ArtworkCardProps) {
     return (
         <Link href={`/gallery/${artwork.id}`}>
@@ -31,6 +37,24 @@ export default function ArtworkCard({
                     <p className="text-sm text-gray-600 mt-2">
                         {artwork.style}
                     </p>
+
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-bold">
+                            {artwork.title}
+                        </h2>
+
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onToggleFavorite?.(artwork.id)
+                            }}
+                            className="text-2xl"
+                        >
+                            {isFavorite ? "❤️" : "🤍"}
+                        </button>
+
+                    </div>
                 </div>
             </div>
         </Link>
