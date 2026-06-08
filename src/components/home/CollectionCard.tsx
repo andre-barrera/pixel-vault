@@ -11,15 +11,15 @@ export default function CollectionCard({
     return (
         <div className="overflow-hidden rounded-xl border shadow-sm hover:shadow-lg transition">
             <Image
-                src={`/${collection.collectionImage}`}
-                alt={collection.collectionName}
+                src={`/${collection.collection_image}`}
+                alt={collection.collection_name}
                 width={400}
                 height={250}
                 className="w-full h-52 object-cover"
             />
             <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2">
-                    {collection.collectionName}
+                    {collection.collection_name}
                 </h3>
                 <p className="text-gray-600">
                     {collection.description}

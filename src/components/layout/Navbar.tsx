@@ -2,10 +2,20 @@
 
 import Link from "next/link";
 import { useTheme } from "@/src/hooks/useTheme";
+import { useAuth } from "@/src/hooks/useAuth";
+import { signOut } from "@/services/authService";
+import { useRouter } from "next/navigation";
 
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
+    const { user } = useAuth();
+    const router = useRouter();
+
+    async function handleLogout() {
+    await signOut();
+    router.push("/");
+}
 
     return (
         <nav className="border-b bg-black text-white">
@@ -23,6 +33,7 @@ export default function Navbar() {
                     <Link href="/gallery/favorites">Favorites</Link>
                     <Link href="/tutorials">Tutorials</Link>
                     <Link href="/community">Community</Link>
+                    <Link href="/upload">Upload</Link>
 
                     <button
                         onClick={toggleTheme}
@@ -34,10 +45,32 @@ export default function Navbar() {
                         }   
                     </button>
 
+                    {user ? (
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm">
+                                {user.email}
+                            </span>
+
+                            <button
+                                onClick={handleLogout}
+                                className="px-3 py-2 border rounded-lg"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="bg-black text-white px-4 py-2 rounded-lg"
+                        >
+                            Login
+                        </Link>
+                    )}
+                    
                     <Link
-                        href="/login"
+                        href="/signUp"
                         className="bg-black text-white px-4 py-2 rounded-lg">
-                        Login
+                        Sign Up
                     </Link>
                 </div>
             </div>

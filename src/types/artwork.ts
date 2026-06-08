@@ -10,8 +10,8 @@ export interface Artwork {
 }
 
 export interface Collection {
-    collectionName: string;
-    collectionImage: string;
+    collection_name: string;
+    collection_image: string;
     description: string;
     
 }

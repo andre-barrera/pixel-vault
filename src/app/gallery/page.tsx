@@ -1,40 +1,48 @@
 "use client";
 
-import { useState } from "react";
-import artworks from "@/src/data/artworks.json";
+import { useState, useEffect } from "react";
 import ArtworkCard from "@/src/components/gallery/ArtworkCard";
 import { useFavorites } from "@/src/hooks/useFavorites";
+import { getArtworks } from "@/services/artworks";
+import { Artwork } from "@/src/types/artwork";
 
 export default function GalleryPage() {
-
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [search, setSearch] = useState("");
   const [style, setStyle] = useState("All");
   const [sortBy, setSortBy] = useState("title-asc");
   const [currentPage, setCurrentPage] = useState(1);
+
   const artworksPerPage = 6;
 
   const { favorites, toggleFavorite } = useFavorites();
 
+  useEffect(() => {
+    async function loadArtworks() {
+      const data = await getArtworks();
+      setArtworks(data);
+    }
+
+    loadArtworks();
+  }, []);
+
   const styles = [
     "All",
     ...new Set(
-        artworks.artworks.map(
-            (artwork) => artwork.style
-        )
+      artworks.map(
+        (artwork) => artwork.style
+      )
     ),
   ];
 
-  const filteredArtworks = artworks.artworks.filter((artwork) => {
+  const filteredArtworks = artworks.filter((artwork) => {
     const query = search.toLowerCase();
 
-    const matchesSearch = 
+    const matchesSearch =
       artwork.title.toLowerCase().includes(query) ||
-      artwork.artist.toLowerCase().includes(query) ||
-      artwork.tags.some((tag) =>
-        tag.toLowerCase().includes(query)
-    );
+      artwork.artist.toLowerCase().includes(query);
 
-     const matchesStyle =
+    const matchesStyle =
       style === "All" ||
       artwork.style === style;
 
@@ -42,170 +50,185 @@ export default function GalleryPage() {
       matchesSearch &&
       matchesStyle
     );
-    });
+  });
 
-    const sortedArtworks = [...filteredArtworks].sort((a, b) => {
+  const sortedArtworks = [...filteredArtworks].sort(
+    (a, b) => {
+      switch (sortBy) {
+        case "title-asc":
+          return a.title.localeCompare(b.title);
 
-        switch (sortBy) {
+        case "title-desc":
+          return b.title.localeCompare(a.title);
 
-            case "title-asc":
-            return a.title.localeCompare(b.title);
+        case "year-newest":
+          return b.year - a.year;
 
-            case "title-desc":
-            return b.title.localeCompare(a.title);
+        case "year-oldest":
+          return a.year - b.year;
 
-            case "year-newest":
-            return b.year - a.year;
+        default:
+          return 0;
+      }
+    }
+  );
 
-            case "year-oldest":
-            return a.year - b.year;
+  const totalPages = Math.ceil(
+    sortedArtworks.length / artworksPerPage
+  );
 
-            default:
-            return 0;
-        }
-    });
+  const startIndex =
+    (currentPage - 1) * artworksPerPage;
 
-    {/* Pagination */}
-    const totalPages = Math.ceil(
-        sortedArtworks.length / artworksPerPage
+  const endIndex =
+    startIndex + artworksPerPage;
+
+  const paginatedArtworks =
+    sortedArtworks.slice(
+      startIndex,
+      endIndex
     );
 
-    const startIndex = (currentPage - 1) * artworksPerPage;
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
 
-    const endIndex = startIndex + artworksPerPage
+  return (
+    <main className="max-w-7xl mx-auto p-6">
+      <h1 className="text-3xl mb-6">
+        Gallery
+      </h1>
 
-    const paginatedArtworks = sortedArtworks.slice(startIndex, endIndex)
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
 
-    const pageNumbers = Array.from (
-        { length: totalPages},
-        (_, index) => index + 1 );
+        <input
+          type="text"
+          placeholder="Search artworks..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="flex-1 p-3 border rounded-lg"
+        />
 
-
-
-    return (
-        <main className="max-w-7xl mx-auto p-6">
-            <h1 className="text-3xl mb-6">Gallery</h1>
-
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-
-            <input
-                type="text"
-                placeholder="Search artworks..."
-                value={search}
-                onChange={(e) => {
-                    setSearch(e.target.value);
-                    setCurrentPage(1);
-                }}
-                className="flex-1 p-3 border rounded-lg"
-            />
-
-            <select
-                value={style}
-                onChange={(e) => {
-                    setStyle(e.target.value);
-                    setCurrentPage(1);
-                }}
-                className="p-3 border rounded-lg"
+        <select
+          value={style}
+          onChange={(e) => {
+            setStyle(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="p-3 border rounded-lg"
+        >
+          {styles.map((styleOption) => (
+            <option
+              key={styleOption}
+              value={styleOption}
             >
-                {styles.map((styleOption) => (
-                <option
-                    key={styleOption}
-                    value={styleOption}
-                >
-                    {styleOption}
-                </option>
-                ))}
-            </select>
+              {styleOption}
+            </option>
+          ))}
+        </select>
 
-            <select
-                value={sortBy}
-                onChange={(e) => {
-                    setStyle(e.target.value);
-                    setCurrentPage(1);
-                }}
-                className="p-3 border rounded-lg"
-            >
-                <option value="title-asc">
-                Title (A-Z)
-                </option>
+        <select
+          value={sortBy}
+          onChange={(e) => {
+            setSortBy(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="p-3 border rounded-lg"
+        >
+          <option value="title-asc">
+            Title (A-Z)
+          </option>
 
-                <option value="title-desc">
-                Title (Z-A)
-                </option>
+          <option value="title-desc">
+            Title (Z-A)
+          </option>
 
-                <option value="year-newest">
-                Newest First
-                </option>
+          <option value="year-newest">
+            Newest First
+          </option>
 
-                <option value="year-oldest">
-                Oldest First
-                </option>
-            </select>
+          <option value="year-oldest">
+            Oldest First
+          </option>
+        </select>
 
-            </div>
-                
-            <p className="mb-4 text-gray-600">
-                Showing {filteredArtworks.length} artwork(s)
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {paginatedArtworks.map((artwork) => (
-                    <ArtworkCard
-                        key={artwork.id}
-                        artwork={artwork}
-                        isFavorite={favorites.includes(artwork.id
-                        )}
-                        onToggleFavorite={toggleFavorite}
-                    />
-                ))}
-            </div>
+      </div>
 
-            {/* Pagination */}    
+      <p className="mb-4 text-gray-600">
+        Showing {filteredArtworks.length} artwork(s)
+      </p>
 
-            <div className="flex justify-center items-center gap-2 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {paginatedArtworks.map((artwork) => (
+          <ArtworkCard
+            key={artwork.id}
+            artwork={artwork}
+            isFavorite={favorites.includes(
+              artwork.id
+            )}
+            onToggleFavorite={
+              toggleFavorite
+            }
+          />
+        ))}
+      </div>
 
-                <button
-                    onClick={() =>
-                    setCurrentPage((prev) =>
-                        Math.max(prev - 1, 1)
-                    )
-                    }
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 border rounded disabled:opacity-50"
-                >
-                    Previous
-                </button>
+      <div className="flex justify-center items-center gap-2 mt-8">
 
-                {pageNumbers.map((page) => (
-                    <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-4 py-2 rounded border ${
-                        currentPage === page
-                        ? "bg-black text-white"
-                        : "bg-white"
-                    }`}
-                    >
-                    {page}
-                    </button>
-                ))}
+        <button
+          onClick={() =>
+            setCurrentPage((prev) =>
+              Math.max(prev - 1, 1)
+            )
+          }
+          disabled={currentPage === 1}
+          className="px-4 py-2 border rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
 
-                <button
-                    onClick={() =>
-                    setCurrentPage((prev) =>
-                        Math.min(prev + 1, totalPages)
-                    )
-                    }
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 border rounded disabled:opacity-50"
-                >
-                    Next
-                </button>
+        {pageNumbers.map((page) => (
+          <button
+            key={page}
+            onClick={() =>
+              setCurrentPage(page)
+            }
+            className={`px-4 py-2 rounded border ${
+              currentPage === page
+                ? "bg-black text-white"
+                : "bg-white text-black"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
 
-                </div>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) =>
+              Math.min(
+                prev + 1,
+                totalPages
+              )
+            )
+          }
+          disabled={
+            currentPage === totalPages
+          }
+          className="px-4 py-2 border rounded disabled:opacity-50"
+        >
+          Next
+        </button>
 
-                <span className="px-4 py-2 flex justify-center">
-                   Page {currentPage} of {totalPages}
-                </span>
-        </main>
-    );
+      </div>
+
+      <div className="flex justify-center mt-4">
+        Page {currentPage} of {totalPages}
+      </div>
+    </main>
+  );
 }

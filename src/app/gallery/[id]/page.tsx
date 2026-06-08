@@ -1,6 +1,6 @@
-import data from "@/src/data/artworks.json"
 import Image from "next/image";
 import Link from "next/link";
+import { getArtworkById, getArtworks } from "@/services/artworks";
 
 interface ArtworkPageProps {
   params: Promise<{
@@ -14,9 +14,7 @@ export default async function ArtworkPage({
 
   const { id } = await params;
 
-  const artwork = data.artworks.find(
-    (art) => art.id === id
-  );
+  const artwork = await getArtworkById(id);
 
   if (!artwork) {
     return (
@@ -26,9 +24,14 @@ export default async function ArtworkPage({
     );
   }
 
-  const relatedArtorks = data.artworks.filter(
-    (art) =>
-      art.id !== artwork?.id && art.style === artwork?.style).slice(0,3);
+  const allArtworks = await getArtworks();
+
+  const relatedArtworks = allArtworks
+    .filter(
+      (art) =>
+        art.id !== artwork.id &&
+        art.style === artwork.style.slice(0, 3));
+
 
 
   return (
@@ -70,17 +73,6 @@ export default async function ArtworkPage({
           {" "}
           {artwork.description}
         </p>
-
-        <div className="flex gap-2 flex-wrap">
-          {artwork.tags.map((tag) => (
-          <span
-            key={tag}
-            className="bg-gray-200 px-3 py-1 rounded-full text-sm"
-          >
-            {tag}
-          </span>
-            ))}
-        </div>
       </div>
 
       {/*related artworks section */}
@@ -91,7 +83,7 @@ export default async function ArtworkPage({
         </h2>
 
       <div className="grid grid-cols-1 md:grid-cols3 gap6">
-        {relatedArtorks.map((related) => (
+        {relatedArtworks.map((related) => (
           <Link
             key={related.id}
             href={`/gallery/${related.id}`}

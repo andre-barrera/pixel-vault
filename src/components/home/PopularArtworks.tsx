@@ -1,10 +1,12 @@
-import data from "@/src/data/artworks.json";
+import { getArtworks } from "@/services/artworks";
 import ArtworkCard from "@/src/components/gallery/ArtworkCard";
 
 
-export default function PopularArtworks() {
+export default async function PopularArtworks() {
 
-    const featuredArtworks = data.artworks.slice(0, 6);
+    const artwork = await getArtworks();
+
+    const featuredArtworks = artwork.slice(0, 6);
 
     return (
         <section className="max-w-7xl mx-auto px-6 py-16">

@@ -1,12 +1,71 @@
+"use client";
+
+import { useState } from "react";
+import { signIn } from "@/services/authService"
+import { useRouter } from "next/navigation";
+
 export default function LoginPage() {
-    return (
-        <main className="max-w-md mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-4">
-                Login
-            </h1>
-            <p>
-                Authentication coming soon.
-            </p>
-        </main>
-    )
+
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleLogin(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
+
+    const { error } = await signIn(
+      email,
+      password
+    );
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    router.push("/");
+  }
+
+  return (
+    <main className="max-w-md mx-auto p-6">
+      <h1 className="text-3xl mb-6">
+        Login
+      </h1>
+
+      <form
+        onSubmit={handleLogin}
+        className="space-y-4"
+      >
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
+          className="w-full p-3 border rounded"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
+          className="w-full p-3 border rounded"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-black text-white p-3 rounded"
+        >
+          Login
+        </button>
+      </form>
+    </main>
+  );
 }
