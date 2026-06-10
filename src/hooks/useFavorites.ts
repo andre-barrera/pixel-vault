@@ -1,40 +1,81 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/src/hooks/useAuth";
+import { getFavorites, addFavorite, removeFavorite } from "@/services/favoritesService";
 
-export function useFavorites () {
+export function useFavorites() {
+    const { user } = useAuth();
+
     const [favorites, setFavorites] = useState<string[]>([]);
 
     useEffect(() => {
-        const savedFavorites = localStorage.getItem("favorites");
+        async function loadFavorites() {
+            if (!user) {
+                setFavorites([]);
+                return;
+            }
 
-        if (savedFavorites) {
-            setFavorites(JSON.parse(savedFavorites));
+            try {
+                const data = await getFavorites(user.id);
+
+                setFavorites(
+                    data.map(
+                        (favorite) => favorite.artwork_id
+                    )
+                );
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }, []);
 
-    const toggleFavorite = (artworkId: string) => {
-        let updatedFavorites: string [];
+        loadFavorites();
+    }, [user]);
 
-        if (favorites.includes(artworkId)) {
-            updatedFavorites = favorites.filter((id) =>
-            id !== artworkId);
-        } 
-        
-        else {
-            updatedFavorites = [...favorites, artworkId];
+    async function toggleFavorite(
+        artworkId: string
+    ) {
+        if (!user) {
+            alert(
+                "Please login to save favorites."
+            );
+            return;
         }
 
-        setFavorites(updatedFavorites);
+        try {
+            if (favorites.includes(artworkId)) {
 
-        localStorage.setItem(
-            "favorites", 
-            JSON.stringify(updatedFavorites)
-        );
-    };
+                await removeFavorite(
+                    user.id,
+                    artworkId
+                );
+
+                setFavorites((prev) =>
+                    prev.filter(
+                        (id) => id !== artworkId
+                    )
+                );
+
+            } else {
+
+                await addFavorite(
+                    user.id,
+                    artworkId
+                );
+
+                setFavorites((prev) => [
+                    ...prev,
+                    artworkId,
+                ]);
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return {
         favorites,
-        toggleFavorite
-    }
+        toggleFavorite,
+    };
 }

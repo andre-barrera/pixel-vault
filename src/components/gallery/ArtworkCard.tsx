@@ -19,11 +19,14 @@ export default function ArtworkCard({
         <Link href={`/gallery/${artwork.id}`}>
             <div className="overflow-hidden rounded-xl border shadow-sm hover:shadow-lg transition">
                 <Image
-                    src={ `/${artwork.image}`}
+                    src={
+                        artwork.image.startsWith("http")
+                        ? artwork.image
+                        : `/${artwork.image}`
+                    }
                     alt={artwork.title}
-                    width={500}
+                    width={400}
                     height={300}
-                    className="w-full h-60 object-cover"
                 />
                 <div className="p-4">
                     <h2 className="text-xl font-semibold">
@@ -40,7 +43,7 @@ export default function ArtworkCard({
 
                     <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">
-                            {artwork.title}
+                            {artwork.description}
                         </h2>
 
                         <button
