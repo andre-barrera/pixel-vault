@@ -1,19 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "@/src/context/ThemeProvider";
 
 export default function Hero() {
+
+  const { theme } = useTheme();
+
+  console.log("CURRENT THEME:", theme);
+
   return (
     <section className="relative w-full h-[700px]">
 
       <Image
-        src="/images/hero-night.png"
-        alt="Pixel Art Showcase"
-        width={1920}
-        height={1080}
-        priority
-        className="w-full h-auto"
-        loading="eager"
-      />
+          key={theme} 
+          src={
+            theme === "dark"
+              ? "/images/hero-night.png"
+              : "/images/hero-day.png"
+          }
+          alt="Pixel Art Showcase"
+          fill
+          priority
+          className="w-full h-auto"
+          loading="eager"
+        />
 
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center text-white px-6">
